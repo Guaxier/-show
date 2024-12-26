@@ -1,0 +1,35 @@
+[
+    {
+        "name": "123",
+        "category": "\u793c\u82b1",
+        "price": "123",
+        "cover": "\/uploads\/covers\/1000.jpg",
+        "details": [
+            "\/uploads\/details\/1000.jpg"
+        ],
+        "video": "",
+        "id": "6738490d6fbe8"
+    },
+    {
+        "name": "\u89c6\u9891\u64ad\u653e\u6d4b\u8bd5\/\u89c6\u9891\u4e0a\u4f20\u6d4b\u8bd5\/\u517c\u5bb9\u6027\u6d4b\u8bd5",
+        "category": "\u5176\u4ed6",
+        "price": "0.88",
+        "cover": "\/uploads\/covers\/1007.jpg",
+        "details": [
+            "\/uploads\/details\/1016.jpg",
+            "\/uploads\/details\/1017.jpg",
+            "\/uploads\/details\/1018.jpg"
+        ],
+        "video": "\/uploads\/videos\/1002.mp4",
+        "id": "6738615d62a28"
+    },
+    {
+        "name": "\u6d4b\u8bd5",
+        "category": "\u5176\u4ed6",
+        "price": "99999.99",
+        "cover": "",
+        "details": [],
+        "video": "",
+        "id": "6738a1d4617be"
+    }
+]
