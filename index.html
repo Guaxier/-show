@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟花预览</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 轮播图 -->
+        <div class="banner-container">
+            <div class="banner" 
+                 v-if="banners.length > 0"
+                 @touchstart="handleTouchStart"
+                 @touchmove="handleTouchMove"
+                 @touchend="handleTouchEnd"
+                 @mousedown="handleMouseDown"
+                 @mousemove="handleMouseMove"
+                 @mouseup="handleMouseUp"
+                 @mouseleave="handleMouseUp">
+                <transition-group name="fade">
+                    <div v-for="(banner, index) in banners" 
+                         :key="banner.id" 
+                         class="banner-slide"
+                         v-show="index === currentBannerIndex"
+                         @click="handleBannerClick(banner)"
+                         :style="{ cursor: banner.linkType ? 'pointer' : 'default' }">
+                        <img :src="banner.url" 
+                             @error="handleImageError"
+                             draggable="false"
+                             alt="轮播图">
+                    </div>
+                </transition-group>
+                <!-- 添加指示器 -->
+                <div class="banner-indicators">
+                    <span v-for="(banner, index) in banners" 
+                          :key="banner.id"
+                          :class="{ active: index === currentBannerIndex }"
+                          @click="setCurrentBanner(index)">
+                    </span>
+                </div>
+            </div>
+            <div v-else class="no-banner">
+                暂无轮播图
+            </div>
+        </div>
+
+        <!-- 搜索框 -->
+        <div class="search-container">
+            <input type="text" 
+                   v-model="searchQuery" 
+                   @input="handleSearch"
+                   placeholder="搜索烟花..."
+                   class="search-input">
+        </div>
+
+        <!-- 分类选择 -->
+        <div class="category-wrapper">
+            <div class="category-container" ref="categoryContainer">
+                <div class="category-item" 
+                     :class="{active: currentCategory === 'all'}"
+                     @click="currentCategory = 'all'">全部</div>
+                <div class="category-item" 
+                     v-for="category in categories" 
+                     :key="category"
+                     :class="{active: currentCategory === category}"
+                     @click="currentCategory = category">
+                    {{ category }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 烟花列表 -->
+        <div class="fireworks-list">
+            <template v-if="filteredFireworks.length > 0">
+                <div class="firework-item" 
+                     v-for="firework in filteredFireworks" 
+                     :key="firework.id"
+                     @click="showDetail(firework)">
+                    <div class="firework-cover">
+                        <img v-if="firework.cover" 
+                             :src="firework.cover" 
+                             :alt="firework.name" 
+                             loading="lazy">
+                        <div v-else class="no-cover">
+                            <span class="no-cover-icon">📷</span>
+                            <span class="no-cover-text">暂无封面</span>
+                        </div>
+                    </div>
+                    <div class="firework-info">
+                        <h3>{{ firework.name }}</h3>
+                        <div class="firework-price">￥{{ parseFloat(firework.price).toFixed(2) }}</div>
+                    </div>
+                </div>
+            </template>
+            <div v-else class="no-results">
+                <div class="no-results-content">
+                    <span class="no-results-icon">🔍</span>
+                    <p>没有找到相关商品</p>
+                    <button @click="clearSearch" class="clear-search-btn">清除搜索</button>
+                </div>
+            </div>
+            
+            <!-- 加载更多触发器 -->
+            <div class="loading-trigger" v-if="hasMore">
+                <div class="loading-spinner" v-if="loading"></div>
+                <span v-else>加载更多...</span>
+            </div>
+        </div>
+
+        <!-- 详情弹窗 -->
+        <div class="detail-modal" v-if="selectedFirework">
+            <div class="detail-content">
+                <button class="close-btn" @click="closeDetail"></button>
+                
+                <!-- 视频部分 -->
+                <div class="video-container">
+                    <video v-if="selectedFirework.video" controls>
+                        <source :src="selectedFirework.video" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                    <div v-else class="no-video-placeholder">
+                        <span class="no-video-icon">🎬</span>
+                        <p>该商品暂无视频</p>
+                    </div>
+                </div>
+                
+                <!-- 商品信息部分 -->
+                <div class="product-info">
+                    <h2 class="product-name">{{ selectedFirework.name }}</h2>
+                    <div class="product-category">
+                        <span class="category-label">分类：</span>
+                        <span class="category-value">{{ selectedFirework.category }}</span>
+                    </div>
+                </div>
+                
+                <!-- 图片部分 -->
+                <div class="detail-images" v-if="selectedFirework.details && selectedFirework.details.length">
+                    <img v-for="(img, index) in selectedFirework.details" 
+                         :key="index" 
+                         :src="img" 
+                         loading="lazy"
+                         @click="showFullImage(img)">
+                </div>
+                
+                <!-- 价格显示部分 -->
+                <div class="price">
+                    <span class="currency">￥</span>
+                    <span class="amount">{{ parseFloat(selectedFirework.price).toFixed(2) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/fireworks.js"></script>
+</body>
+</html> 

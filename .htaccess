@@ -1,0 +1,31 @@
+# 启用重写引擎
+RewriteEngine On
+
+# 允许访问实际文件和目录
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 允许访问上传的文件类型
+<FilesMatch "\.(jpg|jpeg|png|gif|mp4|webm)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# 设置默认字符集
+AddDefaultCharset UTF-8
+
+# 禁止访问 .htaccess 文件
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# 禁止目录列表
+Options -Indexes
+
+# 增加 PHP 上传限制
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_time 300

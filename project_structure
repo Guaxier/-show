@@ -1,0 +1,25 @@
+project/
+├── index.html
+├── admin.html
+├── .htaccess
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── admin.css
+│   ├── js/
+│   │   ├── fireworks.js
+│   │   └── admin.js
+│   └── images/
+│       └── no-cover.jpg
+├── uploads/
+│   ├── banners/
+│   ├── covers/
+│   ├── details/
+│   └── videos/
+├── data/
+│   ├── .htaccess
+│   ├── fireworks.json
+│   └── banners.json
+└── api/
+    ├── api.php
+    └── config.php
